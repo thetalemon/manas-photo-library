@@ -5,11 +5,15 @@ import Link from "next/link";
 import { databaseId } from "./index";
 import styles from "./post.module.scss";
 
-const Text = ({ text }) => {
+type TextProps = {
+  text:any
+}
+
+const Text:React.FC<TextProps> = ({ text }) => {
   if (!text) {
     return null;
   }
-  return text.map((value) => {
+  return text.map((value:any) => {
     const {
       annotations: { bold, code, color, italic, strikethrough, underline },
       text,
@@ -32,7 +36,7 @@ const Text = ({ text }) => {
   });
 };
 
-const renderNestedList = (block) => {
+const renderNestedList = (block:any) => {
   const { type } = block;
   const value = block[type];
   if (!value) return null;
@@ -42,18 +46,18 @@ const renderNestedList = (block) => {
   if (isNumberedList) {
     return (
       <ol>
-        {value.children.map((block) => renderBlock(block))}
+        {value.children.map((block:any) => renderBlock(block))}
       </ol>
     )
   }
   return (
     <ul>
-      {value.children.map((block) => renderBlock(block))}
+      {value.children.map((block:any) => renderBlock(block))}
     </ul>
   )
 }
 
-const renderBlock = (block) => {
+const renderBlock = (block:any) => {
   const { type, id } = block;
   const value = block[type];
 
@@ -105,7 +109,7 @@ const renderBlock = (block) => {
           <summary>
             <Text text={value.text} />
           </summary>
-          {value.children?.map((block) => (
+          {value.children?.map((block:any) => (
             <Fragment key={block.id}>{renderBlock(block)}</Fragment>
           ))}
         </details>
@@ -165,7 +169,13 @@ const renderBlock = (block) => {
   }
 };
 
-export default function Post({ page, blocks }) {
+
+type PostProps = {
+  page:any
+  blocks:any
+}
+
+export const Post:React.FC<PostProps> = ({ page, blocks }) => {
   if (!page || !blocks) {
     return <div />;
   }
@@ -181,7 +191,7 @@ export default function Post({ page, blocks }) {
           <Text text={page.properties.Name.title} />
         </h1>
         <section>
-          {blocks.map((block) => (
+          {blocks.map((block:any) => (
             <Fragment key={block.id}>{renderBlock(block)}</Fragment>
           ))}
           <Link href="/">
@@ -201,7 +211,7 @@ export const getStaticPaths = async () => {
   };
 };
 
-export const getStaticProps = async (context) => {
+export const getStaticProps = async (context:any) => {
   const { id } = context.params;
   const page = await getPage(id);
   const blocks = await getBlocks(id);
@@ -218,7 +228,7 @@ export const getStaticProps = async (context) => {
         };
       })
   );
-  const blocksWithChildren = blocks.map((block) => {
+  const blocksWithChildren = blocks.map((block:any) => {
     // Add child blocks if the block should contain children but none exists
     if (block.has_children && !block[block.type].children) {
       block[block.type]["children"] = childBlocks.find(
@@ -236,3 +246,5 @@ export const getStaticProps = async (context) => {
     revalidate: 1,
   };
 };
+
+export default Post

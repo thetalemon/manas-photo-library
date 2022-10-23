@@ -4,21 +4,21 @@ const notion = new Client({
   auth: process.env.NOTION_TOKEN,
 });
 
-export const getDatabase = async (databaseId) => {
+export const getDatabase = async (databaseId: any) => {
   const response = await notion.databases.query({
     database_id: databaseId,
   });
   return response.results;
 };
 
-export const getPage = async (pageId) => {
+export const getPage = async (pageId: any) => {
   const response = await notion.pages.retrieve({ page_id: pageId });
   return response;
 };
 
-export const getBlocks = async (blockId) => {
+export const getBlocks = async (blockId: any) => {
   const blocks = [];
-  let cursor;
+  let cursor:any;
   while (true) {
     const { results, next_cursor } = await notion.blocks.children.list({
       start_cursor: cursor,

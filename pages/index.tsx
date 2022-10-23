@@ -6,7 +6,11 @@ import Image from 'next/image'
 
 export const databaseId = process.env.NOTION_DATABASE_ID;
 
-export default function Home({ posts }) {
+type HomePorps = {
+  posts: any
+}
+
+const Home:React.FC<HomePorps> = ({ posts }) => {
   return (
     <div>
       <Head>
@@ -19,7 +23,7 @@ export default function Home({ posts }) {
           <h1>manas photos</h1>
         </header>
         <ol className={styles.posts}>
-          {posts.map((post) => {
+          {posts.map((post:any) => {
             return (
               <li key={post.id} className={styles.post}>
                 <Link href={`/${post.id}`}>
@@ -49,3 +53,6 @@ export const getStaticProps = async () => {
     revalidate: 1,
   };
 };
+
+
+export default Home

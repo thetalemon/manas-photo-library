@@ -1,6 +1,11 @@
 import "../styles/globals.scss";
 
-function MyApp({ Component, pageProps }) {
+type MyAppProps = {
+  Component: any,
+  pageProps: any
+}
+
+const MyApp:React.FC<MyAppProps> = ({ Component, pageProps }) => {
   return <Component {...pageProps} />;
 }
 

@@ -36,25 +36,23 @@ const Home:React.FC<HomePorps> = ({ posts }) => {
         <header className={styles.header}>
           <h1>manas photos</h1>
         </header>
-        <Box sx={{ width: 900, height: 450, overflowY: 'scroll' }}>
-          <ImageList variant="masonry" cols={3} gap={8}>
-            {posts.map((post:any) => {
-              return (
-                <ImageListItem key={post.id} className={styles.post}>
-                  {
-                    post.properties['Files & media'].files.length !== 0 && 
-                    (
-                      <Zoom>
-                        <img max-width="200" src={post.properties['Files & media'].files[0].file.url} loading='lazy' />
-                        {/* <Image loading='lazy' height='300' width='300' objectFit='cover' alt='image' src={post.properties['Files & media'].files[0].file.url} /> */}
-                      </Zoom>
-                    )
-                  }
-                </ImageListItem>
-              );
-            })}
-          </ImageList>
-        </Box>
+        <ImageList variant="masonry" cols={3} gap={8}>
+          {posts.map((post:any) => {
+            return (
+              <ImageListItem key={post.id} className={styles.post}>
+                {
+                  post.properties['Files & media'].files.length !== 0 && 
+                  (
+                    <Zoom>
+                      <img src={post.properties['Files & media'].files[0].file.url} loading='lazy' />
+                      {/* <Image loading='lazy' height='300' width='300' objectFit='cover' alt='image' src={post.properties['Files & media'].files[0].file.url} /> */}
+                    </Zoom>
+                  )
+                }
+              </ImageListItem>
+            );
+          })}
+        </ImageList>
       </main>
     </div>
   );

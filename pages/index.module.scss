@@ -1,6 +1,5 @@
 .container {
   padding: 0 20px;
-  max-width: 900px;
   margin: 0 auto;
 }
 
@@ -32,6 +31,8 @@
 .post {
   font-size: 1.4rem;
   img {
-    max-width: 280px;
+    // max-width: 280px;
+    width: 100%;
+    object-fit: fill;
   }
 }

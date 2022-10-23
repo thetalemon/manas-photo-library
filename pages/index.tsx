@@ -1,8 +1,9 @@
 import Head from "next/head";
-import Link from "next/link";
 import { getDatabase } from "../lib/notion";
 import styles from "./index.module.scss";
 import Image from 'next/image'
+import { ImageList, ImageListItem, Box, Button, Dialog, Typography } from '@mui/material';
+import Zoom from 'react-medium-image-zoom'
 
 export const databaseId = process.env.NOTION_DATABASE_ID;
 
@@ -11,6 +12,19 @@ type HomePorps = {
 }
 
 const Home:React.FC<HomePorps> = ({ posts }) => {
+
+  type OpenListItem = {
+    id: any;
+    open: boolean;
+  }
+
+  const openListInit = posts.map((post:any) => {
+    return {
+      id: post.id,
+      open: false
+    }
+  })
+
   return (
     <div>
       <Head>
@@ -22,22 +36,25 @@ const Home:React.FC<HomePorps> = ({ posts }) => {
         <header className={styles.header}>
           <h1>manas photos</h1>
         </header>
-        <ol className={styles.posts}>
-          {posts.map((post:any) => {
-            return (
-              <li key={post.id} className={styles.post}>
-                <Link href={`/${post.id}`}>
-                  <a>
-                    {
-                      post.properties['Files & media'].files.length !== 0 && 
-                      (<Image height='300' width='300' objectFit='cover' alt='image' src={post.properties['Files & media'].files[0].file.url} />)
-                    }
-                  </a>
-                </Link>
-              </li>
-            );
-          })}
-        </ol>
+        <Box sx={{ width: 900, height: 450, overflowY: 'scroll' }}>
+          <ImageList variant="masonry" cols={3} gap={8}>
+            {posts.map((post:any) => {
+              return (
+                <ImageListItem key={post.id} className={styles.post}>
+                  {
+                    post.properties['Files & media'].files.length !== 0 && 
+                    (
+                      <Zoom>
+                        <img max-width="200" src={post.properties['Files & media'].files[0].file.url} loading='lazy' />
+                        {/* <Image loading='lazy' height='300' width='300' objectFit='cover' alt='image' src={post.properties['Files & media'].files[0].file.url} /> */}
+                      </Zoom>
+                    )
+                  }
+                </ImageListItem>
+              );
+            })}
+          </ImageList>
+        </Box>
       </main>
     </div>
   );
